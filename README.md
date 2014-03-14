@@ -6,6 +6,25 @@ information is stored in a database using [Active Record](https://github.com/rai
 Active Record provides an interface for interacting with your database and
 converting your results into Ruby objects.
 
+## Setup
+
+```no-highlight
+# Clone down the contact manager repo
+git clone git@github.com:LaunchAcademy/contact_manager.git
+
+# Move into the contact manager repo directory
+cd contact_manager
+
+# Install all the gems
+bundle install
+
+# Start the app server
+shotgun app.rb
+
+# Open the app in your browser
+open http://localhost:9393
+```
+
 ## Setting Up Active Record in Your Sinatra App
 
 In order to get Active Record working with Sinatra, we're going to use the
