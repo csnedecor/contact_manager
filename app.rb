@@ -1,24 +1,46 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/activerecord'
+require 'pry'
 
 require_relative 'models/contact'
 
-before do
-  contact_attributes = [
-    { first_name: 'Eric', last_name: 'Kelly', phone_number: '1234567890' },
-    { first_name: 'Adam', last_name: 'Sheehan', phone_number: '1234567890' },
-    { first_name: 'Dan', last_name: 'Pickett', phone_number: '1234567890' },
-    { first_name: 'Evan', last_name: 'Charles', phone_number: '1234567890' },
-    { first_name: 'Faizaan', last_name: 'Shamsi', phone_number: '1234567890' },
-    { first_name: 'Helen', last_name: 'Hood', phone_number: '1234567890' },
-    { first_name: 'Corinne', last_name: 'Babel', phone_number: '1234567890' }
-  ]
+def contacts
+  @contacts = Contact.all
+end
 
-  @contacts = contact_attributes.map do |attr|
-    Contact.new(attr)
+def limited_contacts
+    @limit = 5
+    @contacts = Contact.limit(@limit).offset(@limit * @page - @limit)
+end
+
+def increment_page
+  if @page > 1
+    @back = @page-1
+  else
+    @back = 1
+  end
+  if @page < 1
+    @next = 2
+  else
+    @next = @page + 1
   end
 end
 
 get '/' do
+  if params[:page]
+    @page = params[:page].to_i
+  else
+    @page = 1
+  end
+  increment_page
+  limited_contacts
   erb :index
+end
+
+get '/contacts/:id' do
+  contacts
+  @id = params[:id].to_i
+  @contact = @contacts.find(@id)
+  erb :'/contacts/show'
 end

@@ -2,6 +2,14 @@
 
 <ul>
   <% @contacts.each do |contact| %>
-    <li><%= contact.name %> - <%= contact.phone_number %></li>
+    <li><a href = "/contacts/<%= contact.id %>"><%= contact.name %> - <%= contact.phone_number %></a></li>
+  <% end %>
+  <% if @page > 1 && @contacts.count == @limit %>
+    <a href = "?page=<%= @back %>">Back</a>
+    <a href = "?page=<%= @next %>">Next</a>
+  <% elsif @contacts.count < @limit %>
+    <a href = "?page=<%= @back %>">Back</a>
+  <% else %>
+    <a href = '?page=<%= @next %>'>Next</a>
   <% end %>
 </ul>
